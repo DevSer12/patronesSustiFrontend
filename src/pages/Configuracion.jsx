@@ -1,9 +1,11 @@
-const Configuracion = () => {
-    return (
-        <div>
-            <h2>Configuracion Page</h2>
-        </div>
-    );
-};
+import EstrategiaPrecio from "../components/configuracion/EstrategiaPrecio";
+import MetodoPago from "../components/configuracion/MetodoPago";
 
-export default Configuracion;
+export default function Configuracion () {
+    return (
+        <>
+            <EstrategiaPrecio />
+            <MetodoPago />
+        </>
+    );
+}
