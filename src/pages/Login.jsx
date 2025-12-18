@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { useAuth } from '../hooks/useAuth';
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import api from '../services/api';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const Login = () => {
     const [username, setUsername] = useState('');

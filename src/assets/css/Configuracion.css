@@ -1,0 +1,21 @@
+.config-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 0 auto 20px auto;
+  background-color: #ffffff;
+  max-width: 600px;
+}
+.config-card h2 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+.config-card h5 {
+  margin-bottom: 15px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.config-card .form-text {
+  margin-top: 10px;
+  display: block;
+}
