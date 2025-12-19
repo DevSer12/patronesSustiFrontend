@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../context/AuthProvider';
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
-import api from '../services/api';
+import apiLogin from '../services/apiLogin';
 
 
 const Login = () => {
@@ -15,7 +15,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { token } = await api('/login', 'POST', { username, password });
+            const { token } = await apiLogin('/login', 'POST', { username, password });
             login({ username }, token);
             Swal.fire({ title: '¡Bienvenido!', icon: 'success', timer: 1500, showConfirmButton: false });
             navigate('/pedidos');

@@ -1,4 +1,4 @@
-import {createBrowserRouter} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Login from "../pages/Login.jsx";
 import Pedidos from "../pages/Pedidos.jsx";
 import Configuracion from "../pages/Configuracion.jsx";
@@ -13,32 +13,25 @@ export const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout />,
-        children: [    
+        children: [
             {
                 path: "/pedidos",
-                element: <Pedidos />,
+                element: (
+                    <RutaProtegida>
+                        <Pedidos />
+                    </RutaProtegida>
+                ),
             },
             {
                 path: "/configuracion",
-                element: <Configuracion />,
+                element: (
+                    <RutaProtegida>
+                        <Configuracion />
+                    </RutaProtegida>
+                ),
             },
         ],
     },
 
-    {
-        path: "/pedidos",
-        element: (
-            <RutaProtegida>
-                <Pedidos />
-            </RutaProtegida>
-        ),
-    },
-    {
-        path: "/configuracion",
-        element: (
-            <RutaProtegida>
-                <Configuracion />
-            </RutaProtegida>
-        ),
-    },
+    
 ])

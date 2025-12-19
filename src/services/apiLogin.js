@@ -1,5 +1,5 @@
 
-const api = async (endpoint = '/login', method = 'POST', body = null) => {
+const apiLogin = async (endpoint = '/login', method = 'POST', body = null) => {
     const token = localStorage.getItem('token');
     const headers = { 'Content-Type': 'application/json' };
 
@@ -18,4 +18,4 @@ const api = async (endpoint = '/login', method = 'POST', body = null) => {
     return datos;
 };
 
-export default api;
+export default apiLogin;
