@@ -1,9 +1,20 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthProvider';
 
 export default function Header() {
+    const { logout } = useContext(AuthContext);
+    const handleLogout = () => {
+        logout();
+    }
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -18,6 +29,15 @@ export default function Header() {
             <Navbar.Text>
               Usuario: <a href="#login">Admin</a>
             </Navbar.Text>
+          </div>
+          <div style={ { marginLeft: '20px' } }>
+            <Form inline="true" onSubmit={handleLogout}>
+              <Row>
+                <Col xs="auto">
+                  <Button type="submit" style={{ backgroundColor: '#767677ff', borderColor: '#767677ff', color: '#ffffff', fontSize: '10px', height: '22px', width: '70px',padding: '0' }} >Cerrar sesión</Button>
+                </Col>
+              </Row>
+            </Form>
           </div>
         </Navbar.Collapse>
       </Container>
