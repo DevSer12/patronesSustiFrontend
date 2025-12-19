@@ -1,57 +1,21 @@
 
-const BASE_URL = 'http://localhost:8080/public';
+const api = async (endpoint = '/login', method = 'POST', body = null) => {
+    const token = localStorage.getItem('token');
+    const headers = { 'Content-Type': 'application/json' };
 
+    if (endpoint !== '/login' && token)
+        headers.Authorization = `Bearer ${token}`;
 
-
-export const api = async (
-    endpoint = '/login',
-    method = 'POST',
-    body = null,
-    options = { auth: true, credentials: false }
-) => {
-    const url = `${BASE_URL}${endpoint}`;
-    const headers = {};
-
-    if (body) headers['Content-Type'] = 'application/json';
-
-
-    if (options.auth) {
-        const token = localStorage.getItem('token');
-        if (token) headers['Authorization'] = `Bearer ${token}`;
-    }
-
-    const config = {
+    const res = await fetch(`http://localhost:8080/public${endpoint}`, {
         method,
         headers,
-    };
+        body: body ? JSON.stringify(body) : null
+    });
 
-    if (options.credentials) config.credentials = 'include';
-    if (body) config.body = JSON.stringify(body);
-
-    try {
-        const resp = await fetch(url, config);
-        if (resp.status === 204) return null;
-
-
-        const texto = await resp.text();
-        let datos;
-        try {
-            datos = texto ? JSON.parse(texto) : null;
-        } catch {
-
-            datos = texto;
-        }
-
-        if (!resp.ok) {
-            const msg = (datos && datos.message) || (typeof datos === 'string' && datos) || `Error ${resp.status}`;
-            throw new Error(msg);
-        }
-
-        return datos;
-    } catch (err) {
-        console.error('api error:', err);
-        throw err;
-    }
+    const texto = await res.text();
+    const datos = texto ? JSON.parse(texto) : null;
+    if (!res.ok) throw new Error(datos?.message || 'Error en la petición');
+    return datos;
 };
 
 export default api;
