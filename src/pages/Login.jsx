@@ -32,7 +32,7 @@ const Login = () => {
                 <Col xs={12} md={6} lg={4}>
                     <Card className="shadow p-4">
                         <Card.Body>
-                            <h2 className="text-center mb-4 text-primary">Iniciar Sesión en TechSolutions</h2>
+                            <h2 className="text-center mb-4 text-primary">TechSolutions</h2>
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group className="mb-3" controlId="formBasicUser">
                                     <Form.Label>Nombre de Usuario</Form.Label>

@@ -9,8 +9,12 @@ import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthProvider';
 
+
 export default function Header() {
     const { logout } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
+    const nombreUsuario = user ? user.username : '';
+
     const handleLogout = () => {
         logout();
     }
@@ -27,7 +31,7 @@ export default function Header() {
           </Nav>
           <div className="ms-auto">
             <Navbar.Text>
-              Usuario: <a href="#login">Admin</a>
+              Usuario: <a href="#login">{nombreUsuario}</a>
             </Navbar.Text>
           </div>
           <div style={ { marginLeft: '20px' } }>
