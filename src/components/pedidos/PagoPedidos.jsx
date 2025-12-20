@@ -6,9 +6,12 @@ import Form from 'react-bootstrap/Form';
 import { useEffect, useState } from 'react';
 import apiPedido from '../../services/apiPedido';
 import Swal from 'sweetalert2';
+import { useContext } from 'react';
+import { AuthContext } from "../../context/AuthProvider";
 
 const PagoPedidos = ({ onVolver }) => {
   const [pedidos, setPedidos] = useState({});
+  const { metodosPago } = useContext(AuthContext);
   useEffect(() => {
     const fetchPedidos = async () => {
       try {
@@ -20,7 +23,7 @@ const PagoPedidos = ({ onVolver }) => {
     }
     fetchPedidos();
   }, []);
- 
+
   const mensaje = () => {
     Swal.fire({
       title: 'Pago Procesado',
@@ -50,7 +53,7 @@ const PagoPedidos = ({ onVolver }) => {
                     <th>ID</th>
                     <th>Cliente</th>
                     <th>Fecha</th>
-                    <th>Monto</th>                   
+                    <th>Monto</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -58,7 +61,7 @@ const PagoPedidos = ({ onVolver }) => {
                     <td>{pedidos.id}</td>
                     <td>{pedidos.cliente}</td>
                     <td>{pedidos.fechaCreacion}</td>
-                    <td>{pedidos.monto}</td>                    
+                    <td>{pedidos.monto}</td>
                   </tr>
                 </tbody>
               </Table>
@@ -69,9 +72,12 @@ const PagoPedidos = ({ onVolver }) => {
               <Form.Group className='mb-5'>
                 <Form.Label htmlFor="">Metodo de Pago:</Form.Label>
                 <Form.Select className="form-select w-50" aria-label="Metodo de pago">
-                  <option selected></option>
-                  <option value="1"></option>
-                  <option value="2"></option>
+                  <option value="">Seleccionar método</option>
+                  {metodosPago.map((metodo) => (
+                    <option key={metodo} value={metodo}>
+                      {metodo}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
               <Form.Group className="mb-5">
@@ -81,7 +87,7 @@ const PagoPedidos = ({ onVolver }) => {
                 <br />
                 <Form.Label htmlFor="" className=''>Monto a Pagar:</Form.Label>
                 <br />
-                <Form.Control type="text"  name='txtmonto' className='w-50' value={pedidos.montoFinal} readOnly />
+                <Form.Control type="text" name='txtmonto' className='w-50' value={pedidos.montoFinal} readOnly />
               </Form.Group>
               <Button className='bg-dark w-50' onClick={mensaje}>Procesar Pago</Button>
               <br /><br />

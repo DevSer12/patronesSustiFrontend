@@ -1,16 +1,45 @@
-# React + Vite
+## Pasos de instalacion
+### 1. Clonacion del proyecto del FrontEnd
+Clonar el repositorio de github con el comando  
+```bash
+ git clone https://github.com/DevSer12/patronesSustiFrontend.git 
+ ```
+Abrir el proyecto en Visual Studio Code
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+### 2. Instalacion
+Ubicarse en la carpeta del proyecto e instalar las dependencias con el comando : 
+```bash
+npm install  
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
+### 3. Crear la base de datos
+Abrir el cliente de base de datos en nuestro caso usamos DBeaver , crear la base de datos con el nombre de susti.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+### 4.Clonar el proyecto del BackEnd
+Clonar el repositorio de github con el comando  
+```bash
+ git clone https://github.com/redox11223/patronesSustiBackend
+ ```
+Abrir el proyecto en inteliJidea
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+### 5. Correr el BackEnd
+Levantar el proyecto de backend sin errores. El proyecto contiene un archivo que al ejecutarse llena la base de datos con datos.
+
+
+### 6. Correr el FrontEnd
+Ejecutar el proyecto de Frontend con el comando 
+```bash
+npm run dev
+```
+
+
+### 7. Logueo de Usuario
+Al cargar la aplicacion mostrara el LOGIN,  se debe ingresar con los siguientes datos.
+
+| Rol | Usuario | Contraseña |
+| :--- | :--- | :--- |
+| **Administrador** | admin | `admin123` |
