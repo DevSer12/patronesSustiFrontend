@@ -9,16 +9,13 @@ import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthProvider';
 
-
 export default function Header() {
     const { logout } = useContext(AuthContext);
     const { user } = useContext(AuthContext);
     const nombreUsuario = user ? user.username : '';
-
     const handleLogout = () => {
         logout();
     }
-
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>

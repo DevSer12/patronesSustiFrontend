@@ -5,7 +5,6 @@ import { AuthContext } from '../context/AuthProvider';
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import apiLogin from '../services/apiLogin';
 
-
 const Login = () => {
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -24,10 +23,8 @@ const Login = () => {
         }
     };
 
-
     return (
-        <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
-         
+        <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>  
            <Row className="w-100 justify-content-center">
                 <Col xs={12} md={6} lg={4}>
                     <Card className="shadow p-4">
