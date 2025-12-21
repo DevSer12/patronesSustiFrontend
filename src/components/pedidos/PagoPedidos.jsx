@@ -67,14 +67,94 @@ const PagoPedidos = ({ onVolver }) => {
     setMontoFinal(nuevoMonto);
   };
 
-  const mensaje = () => {
+  const handleProcesarPago = async () => {
+    if (!metodoSeleccionado) {
+      Swal.fire({
+        title: 'Advertencia',
+        text: 'Debe seleccionar un método de pago.',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+      });
+      return;
+    }
+
     Swal.fire({
-      title: 'Pago Procesado',
-      text: 'El pago del pedido ha sido procesado exitosamente.',
-      icon: 'success',
-      confirmButtonText: 'Aceptar'
+      title: '¿Procesar Pago?',
+      text: `Se procesará un pago de $${montoFinal.toFixed(2)} mediante ${metodoSeleccionado}`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, procesar',
+      cancelButtonText: 'Cancelar',
+
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const pagoData = {
+            metodoPago: metodoSeleccionado,
+            monto: montoFinal,
+            pedido: {
+              id: pedidos.id
+            }
+          };
+          await apiPedido(`api/pago`, 'POST', pagoData);
+          Swal.fire({
+            title: 'Pago Procesado',
+            text: 'El pago del pedido ha sido procesado exitosamente.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          }).then(() => {
+            setPedidos({ ...pedidos, estado: 'PAGADO' });
+            onVolver();
+          });
+        } catch (error) {
+          Swal.fire({
+            title: 'Error',
+            text: 'No se pudo procesar el pago.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+          console.error('Error procesando pago:', error);
+        }
+      }
     });
   }
+
+  const handleCancelarPedido = async () => {
+    Swal.fire({
+      title: '¿Cancelar Pedido?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, cancelar',
+      cancelButtonText: 'No',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const cancelarData = {
+            montoFinal: montoFinal
+          };
+          await apiPedido(`api/pedidos/${pedidos.id}/cancelar`, 'PUT', cancelarData);
+          Swal.fire({
+            title: 'Pedido Cancelado',
+            text: 'El pedido ha sido cancelado exitosamente.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          }).then(() => {
+            setPedidos({ ...pedidos, estado: 'CANCELADO' });
+            onVolver();
+          });
+        } catch (error) {
+          Swal.fire({
+            title: 'Error',
+            text: 'No se pudo cancelar el pedido.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+          console.error('Error cancelando pedido:', error);
+        }
+      }
+    });
+  };
 
   return (
     <>
@@ -137,9 +217,9 @@ const PagoPedidos = ({ onVolver }) => {
                 <br />
                 <Form.Control type="text" name='txtmonto' className='form-full-width' value={montoFinal.toFixed(2)} readOnly />
               </Form.Group>
-              <Button className='bg-dark button-full-width' onClick={mensaje}>Procesar Pago</Button>
+              <Button className='bg-dark button-full-width' onClick={handleProcesarPago}>Procesar Pago</Button>
               <br /><br />
-              <Button className='bg-dark button-full-width' onClick={onVolver}>Cancelar Pedido</Button>
+              <Button className='bg-dark button-full-width' onClick={handleCancelarPedido}>Cancelar Pedido</Button>
             </Form>
           </Col>
         </Row>
