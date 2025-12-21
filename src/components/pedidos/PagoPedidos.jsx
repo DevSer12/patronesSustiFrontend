@@ -1,5 +1,4 @@
-import React from 'react'
-import { Col, Dropdown, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -92,9 +91,7 @@ const PagoPedidos = ({ onVolver }) => {
           const pagoData = {
             metodoPago: metodoSeleccionado,
             monto: montoFinal,
-            pedido: {
-              id: pedidos.id
-            }
+            pedido: { ...pedidos, montoFinal: montoFinal }
           };
           await apiPedido(`api/pago`, 'POST', pagoData);
           Swal.fire({
@@ -131,7 +128,7 @@ const PagoPedidos = ({ onVolver }) => {
       if (result.isConfirmed) {
         try {
           const cancelarData = {
-            montoFinal: montoFinal
+            estado: 'CANCELADO'
           };
           await apiPedido(`api/pedidos/${pedidos.id}/cancelar`, 'PUT', cancelarData);
           Swal.fire({
