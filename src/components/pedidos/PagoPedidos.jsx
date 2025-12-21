@@ -5,13 +5,19 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useEffect, useState } from 'react';
 import apiPedido from '../../services/apiPedido';
+import apiPrecio from '../../services/apiPrecio';
 import Swal from 'sweetalert2';
 import { useContext } from 'react';
 import { AuthContext } from "../../context/AuthProvider";
+import '../../assets/css/Pedidos.css';
 
 const PagoPedidos = ({ onVolver }) => {
   const [pedidos, setPedidos] = useState({});
+  const [estrategia, setEstrategia] = useState('');
+  const [montoFinal, setMontoFinal] = useState(0);
+  const [metodoSeleccionado, setMetodoSeleccionado] = useState('');
   const { metodosPago } = useContext(AuthContext);
+
   useEffect(() => {
     const fetchPedidos = async () => {
       try {
@@ -23,6 +29,43 @@ const PagoPedidos = ({ onVolver }) => {
     }
     fetchPedidos();
   }, []);
+
+  useEffect(() => {
+    const cargarEstrategia = async () => {
+      try {
+        const config = await apiPrecio('/precio', 'GET');
+        const nombreEstrategia = obtenerNombreEstrategia(config.estrategia, config.descuentoPorcentaje, config.factorDinamico);
+        setEstrategia(nombreEstrategia);
+        calcularMonto(pedidos.monto, config.estrategia, config.descuentoPorcentaje, config.factorDinamico);
+      } catch (error) {
+        console.error('Error fetching estrategia:', error);
+      }
+    }
+    cargarEstrategia();
+  }, [pedidos.monto]);
+
+  const obtenerNombreEstrategia = (estrat, descuento, factor) => {
+    if (estrat === 'ESTANDAR') return 'Precio Estándar';
+    if (estrat === 'DESCUENTO' && descuento) return `Precio con Descuento ${descuento}%`;
+    if (estrat === 'DINAMICO' && factor) {
+      const porcentajeAumento = ((factor - 1) * 100).toFixed(0);
+      return `Precio Dinámico ${porcentajeAumento}%`;
+    }
+    return '';
+  };
+
+  const calcularMonto = (monto, estrat, descuento, factor) => {
+    if (!monto) return;
+    let nuevoMonto = monto;
+    
+    if (estrat === 'DESCUENTO' && descuento) {
+      nuevoMonto = monto - (monto * (descuento / 100));
+    } else if (estrat === 'DINAMICO' && factor) {
+      nuevoMonto = monto * factor;
+    }
+    
+    setMontoFinal(nuevoMonto);
+  };
 
   const mensaje = () => {
     Swal.fire({
@@ -70,8 +113,13 @@ const PagoPedidos = ({ onVolver }) => {
           <Col className="mb-3 col-3 align-items-right">
             <Form className=' '>
               <Form.Group className='mb-5'>
-                <Form.Label htmlFor="">Metodo de Pago:</Form.Label>
-                <Form.Select className="form-select w-50" aria-label="Metodo de pago">
+                <Form.Label htmlFor="" className='form-label-small'>Método de Pago:</Form.Label>
+                <Form.Select 
+                  className="form-select form-full-width" 
+                  aria-label="Metodo de pago"
+                  value={metodoSeleccionado}
+                  onChange={(e) => setMetodoSeleccionado(e.target.value)}
+                >
                   <option value="">Seleccionar método</option>
                   {metodosPago.map((metodo) => (
                     <option key={metodo} value={metodo}>
@@ -81,17 +129,17 @@ const PagoPedidos = ({ onVolver }) => {
                 </Form.Select>
               </Form.Group>
               <Form.Group className="mb-5">
-                <Form.Label htmlFor="" className='w-50'>Estrategia de Precio:</Form.Label>
+                <Form.Label htmlFor="" className='form-label-small'>Estrategia de Precio:</Form.Label>
                 <br />
-                <Form.Control className="mb-4 w-50" type="text" placeholder="" name='txtestrategia' readOnly />
+                <Form.Control className="mb-4 form-full-width" type="text" placeholder="" name='txtestrategia' value={estrategia} readOnly />
                 <br />
-                <Form.Label htmlFor="" className=''>Monto a Pagar:</Form.Label>
+                <Form.Label htmlFor="" className='form-label-small'>Monto a Pagar:</Form.Label>
                 <br />
-                <Form.Control type="text" name='txtmonto' className='w-50' value={pedidos.montoFinal} readOnly />
+                <Form.Control type="text" name='txtmonto' className='form-full-width' value={montoFinal.toFixed(2)} readOnly />
               </Form.Group>
-              <Button className='bg-dark w-50' onClick={mensaje}>Procesar Pago</Button>
+              <Button className='bg-dark button-full-width' onClick={mensaje}>Procesar Pago</Button>
               <br /><br />
-              <Button className='bg-dark w-50' onClick={onVolver}>Cancelar Pedido</Button>
+              <Button className='bg-dark button-full-width' onClick={onVolver}>Cancelar Pedido</Button>
             </Form>
           </Col>
         </Row>

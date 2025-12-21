@@ -34,7 +34,7 @@ const ListadoPedidos = ({ onPago }) => {
                             <h2>Pedidos</h2>
                         </Col>
                         <Col className="mt-3 mb-3 col-6">
-                            <div container className='d-flex justify-content-end gap-2'>
+                            <div className='d-flex justify-content-end gap-2'>
                                 <Form.Control type="text" placeholder="cliente" name='txtcliente' />
                                 <Form.Control type="text" placeholder="estado" name='txtestado' />
                                 <Form.Control type="text" placeholder="fecha" name='txtfecha' />
