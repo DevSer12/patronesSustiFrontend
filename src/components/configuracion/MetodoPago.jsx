@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { AuthContext } from "../../context/AuthProvider"; 
@@ -8,30 +7,36 @@ import { useContext } from "react";
 import "../../assets/css/Configuracion.css";
 
 export default function MetodoPago() {
+  const [initialized, setInitialized] = useState(false);
   const [paypal, setPaypal] = useState(false);
   const [yape, setYape] = useState(false);
   const [plin, setPlin] = useState(false);
   const { actualizarMetodosPago } = useContext(AuthContext);
 
-  const manejarCambio = (metodo, estado) => {
-    let nuevoPaypal = paypal;
-    let nuevoYape = yape;
-    let nuevoPlin = plin;
-    
-    if (metodo === 'paypal') nuevoPaypal = estado;
-    if (metodo === 'yape') nuevoYape = estado;
-    if (metodo === 'plin') nuevoPlin = estado;
-    
-    setPaypal(nuevoPaypal);
-    setYape(nuevoYape);
-    setPlin(nuevoPlin);
+  useEffect(() => {
+    const config = JSON.parse(localStorage.getItem('metodosPago') || '{}');
+    if (config.paypal !== undefined) setPaypal(config.paypal);
+    if (config.yape !== undefined) setYape(config.yape);
+    if (config.plin !== undefined) setPlin(config.plin);
+    setInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!initialized) return;
+    const config = { paypal, yape, plin };
+    localStorage.setItem('metodosPago', JSON.stringify(config));
     
     const activos = [];
-    if (nuevoPaypal) activos.push('PayPal');
-    if (nuevoYape) activos.push('Yape');
-    if (nuevoPlin) activos.push('Plin');
-    
+    if (paypal) activos.push('PayPal');
+    if (yape) activos.push('Yape');
+    if (plin) activos.push('Plin');
     actualizarMetodosPago(activos);
+  }, [paypal, yape, plin, initialized]);
+
+  const manejarCambio = (metodo, estado) => {
+    if (metodo === 'paypal') setPaypal(estado);
+    if (metodo === 'yape') setYape(estado);
+    if (metodo === 'plin') setPlin(estado);
   }; 
   return (
     <div className="config-card">
