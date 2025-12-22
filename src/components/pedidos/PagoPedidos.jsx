@@ -10,7 +10,7 @@ import { useContext } from 'react';
 import { AuthContext } from "../../context/AuthProvider";
 import '../../assets/css/Pedidos.css';
 
-const PagoPedidos = ({ onVolver, pedidoId}) => {
+const PagoPedidos = ({ onVolver, pedidoId }) => {
   const [pedido, setPedido] = useState({});
   const [estrategia, setEstrategia] = useState('');
   const [montoFinal, setMontoFinal] = useState(0);
@@ -36,8 +36,8 @@ const PagoPedidos = ({ onVolver, pedidoId}) => {
         console.error('Error fetching pedidos:', error);
       }
     }
-    if( pedidoId ){
-    fetchPedidos();
+    if (pedidoId) {
+      fetchPedidos();
     }
   }, [pedidoId]);
 
@@ -48,7 +48,7 @@ const PagoPedidos = ({ onVolver, pedidoId}) => {
         const nombreEstrategia = obtenerNombreEstrategia(config.estrategia, config.descuentoPorcentaje, config.factorDinamico);
         setEstrategia(nombreEstrategia);
 
-       // calcularMonto(pedidos.monto, config.estrategia, config.descuentoPorcentaje, config.factorDinamico);
+        // calcularMonto(pedidos.monto, config.estrategia, config.descuentoPorcentaje, config.factorDinamico);
       } catch (error) {
         console.error('Error fetching estrategia:', error);
       }
@@ -149,7 +149,7 @@ const PagoPedidos = ({ onVolver, pedidoId}) => {
       <div className="container mt-4 border p-4 rounded">
         <Row className="mb-3">
           <Col className="mb-3 col-9">
-            <h2>Pedidos</h2>
+            <h2>Pagos</h2>
           </Col>
           <Col className="mt-3 mb-3 col-3">
             <Form.Label htmlFor="" className='fw-bold'>Estado: {pedido.estado}</Form.Label>
@@ -182,8 +182,8 @@ const PagoPedidos = ({ onVolver, pedidoId}) => {
             <Form className=' '>
               <Form.Group className='mb-5'>
                 <Form.Label htmlFor="" className='form-label-small'>Método de Pago:</Form.Label>
-                <Form.Select 
-                  className="form-select form-full-width" 
+                <Form.Select
+                  className="form-select form-full-width"
                   aria-label="Metodo de pago"
                   value={metodoSeleccionado}
                   onChange={(e) => setMetodoSeleccionado(e.target.value)}
