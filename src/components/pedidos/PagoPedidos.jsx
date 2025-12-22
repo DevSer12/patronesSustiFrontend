@@ -47,14 +47,12 @@ const PagoPedidos = ({ onVolver, pedidoId }) => {
         const config = await apiPrecio('/precio', 'GET');
         const nombreEstrategia = obtenerNombreEstrategia(config.estrategia, config.descuentoPorcentaje, config.factorDinamico);
         setEstrategia(nombreEstrategia);
-
-        // calcularMonto(pedidos.monto, config.estrategia, config.descuentoPorcentaje, config.factorDinamico);
       } catch (error) {
         console.error('Error fetching estrategia:', error);
       }
     }
     cargarEstrategia();
-  }, []); //pedidos.monto
+  }, []);
 
   const handleProcesarPago = async () => {
     setMontoFinal(pedido.montoFinal);
