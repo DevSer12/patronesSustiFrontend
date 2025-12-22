@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import apiPedido from '../../services/apiPedido';
 
 const ListadoPedidos = ({ onPago }) => {
-    const [pedidos, setPedidos] = useState({});
+    const [pedidos, setPedidos] = useState([]);
     useEffect(() => {
         const fetchPedidos = async () => {
             try {
@@ -17,14 +17,15 @@ const ListadoPedidos = ({ onPago }) => {
         }
         fetchPedidos();
     }, []);
-    
+
     const handleVer = () => {
         alert(`Mostrando detalles para:`);
     };
 
-    const handlePagoPedidos = () => {
-        onPago();
+    const handlePagoPedidos = (idPedido) => {
+        onPago(idPedido);
     };
+
     return (
         <>
             <div className="container mt-4 border p-4 rounded ">
@@ -55,25 +56,27 @@ const ListadoPedidos = ({ onPago }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>{pedidos.id}</td>
-                                <td>{pedidos.cliente}</td>
-                                <td>{pedidos.fechaCreacion}</td>
-                                <td>{pedidos.monto}</td>
-                                <td>{pedidos.estado}</td>
-                                <td>
-                                    <button
-                                        onClick={() => handleVer()}
-                                    >
-                                        + Ver
-                                    </button>
-                                    <button
-                                        onClick={() => handlePagoPedidos()}
-                                    >
-                                        Pago
-                                    </button>
-                                </td>
-                            </tr>
+                            {pedidos.map((pedido) => (
+                                <tr key={pedido.id}>
+                                    <td>{pedido.id}</td>
+                                    <td>{pedido.cliente}</td>
+                                    <td>{pedido.fechaCreacion}</td>
+                                    <td>{pedido.monto}</td>
+                                    <td>{pedido.estado}</td>
+                                    <td>
+                                        <button
+                                            onClick={() => handleVer()}
+                                        >
+                                            + Ver
+                                        </button>
+                                        <button
+                                            onClick={() => handlePagoPedidos(pedido.id)}
+                                        >
+                                            Pago
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </Table>
                 </div>

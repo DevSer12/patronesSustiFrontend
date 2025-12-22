@@ -4,18 +4,18 @@ import PagoPedidos from "../components/pedidos/PagoPedidos";
 
 const Pedidos = () => {
     const [mostrarPago, setMostrarPago] = useState(false);
-    const handlePagoPedidos = () => {
+    const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
+    const handlePago = (pedidoId) => {
+        setPedidoSeleccionado(pedidoId);
         setMostrarPago(true);
     };
-    const handleVolver = () => {
-        setMostrarPago(false);
-    };
+   
     return (
         <>
-            {mostrarPago ? (
-                <PagoPedidos onVolver={handleVolver} />
+            {!mostrarPago ? (
+                <ListadoPedidos onPago={handlePago} />
             ) : (
-                <ListadoPedidos onPago={handlePagoPedidos} />
+                <PagoPedidos pedidoId={pedidoSeleccionado} onVolver={() => setMostrarPago(false)} />
             )}    
         </>
     );
