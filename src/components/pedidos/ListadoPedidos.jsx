@@ -3,9 +3,13 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import { useEffect, useState } from 'react';
 import apiPedido from '../../services/apiPedido';
+import Swal from 'sweetalert2';
+
 
 const ListadoPedidos = ({ onPago }) => {
     const [pedidos, setPedidos] = useState([]);
+
+
     useEffect(() => {
         const fetchPedidos = async () => {
             try {
@@ -19,7 +23,7 @@ const ListadoPedidos = ({ onPago }) => {
     }, []);
 
     const handleVer = () => {
-        alert(`Mostrando detalles para:`);
+       Swal.fire({ title: 'VISTA EN DESARROLLO!', icon: 'success', timer: 1500, showConfirmButton: false });
     };
 
     const handlePagoPedidos = (idPedido) => {
@@ -69,11 +73,13 @@ const ListadoPedidos = ({ onPago }) => {
                                         >
                                             + Ver
                                         </button>
-                                        <button
-                                            onClick={() => handlePagoPedidos(pedido.id)}
-                                        >
-                                            Pago
-                                        </button>
+                                        {pedido.estado === 'PENDIENTE' && (
+                                            <button
+                                                onClick={() => handlePagoPedidos(pedido.id)}
+                                            >
+                                                Pago
+                                            </button>
+                                        )}
                                     </td>
                                 </tr>
                             ))}

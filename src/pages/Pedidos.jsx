@@ -1,22 +1,16 @@
-import { useState } from "react";
 import ListadoPedidos from "../components/pedidos/ListadoPedidos";
-import PagoPedidos from "../components/pedidos/PagoPedidos";
+import { useNavigate } from "react-router-dom";
 
 const Pedidos = () => {
-    const [mostrarPago, setMostrarPago] = useState(false);
-    const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
+    const navigate = useNavigate();
+
     const handlePago = (pedidoId) => {
-        setPedidoSeleccionado(pedidoId);
-        setMostrarPago(true);
+         navigate(`/pagos/${pedidoId}`);
     };
    
     return (
         <>
-            {!mostrarPago ? (
-                <ListadoPedidos onPago={handlePago} />
-            ) : (
-                <PagoPedidos pedidoId={pedidoSeleccionado} onVolver={() => setMostrarPago(false)} />
-            )}    
+            <ListadoPedidos onPago={handlePago} />
         </>
     );
 };

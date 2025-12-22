@@ -4,6 +4,7 @@ import Pedidos from "../pages/Pedidos.jsx";
 import Configuracion from "../pages/Configuracion.jsx";
 import Layout from "../components/Layout.jsx";
 import { RutaProtegida } from "../components/RutaProtegida.jsx";
+import Pagos from "../pages/Pagos.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +30,13 @@ export const router = createBrowserRouter([
                         <Configuracion />
                     </RutaProtegida>
                 ),
+            },
+            {
+                path: '/pagos/:pedidoId',
+                element: 
+                    <RutaProtegida>
+                         <Pagos />
+                    </RutaProtegida>
             },
         ],
     },
